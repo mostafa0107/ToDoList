@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <meta http-equiv="refresh" content="1"> -->
+     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <div id="modal" class="modal">
+        <div class="modalbody"  id="modalbody">
+            <h1 style="color:rgb(246, 238, 223);">type your task name</h1>
+            <input type="text" style="height: 50px; padding: 10px;font-size: 35px;" id="taskTitleVal">
+            <input type="submit" value="add task" style="padding: 10px;" id="submit" onclick="add()">
+            <input type="button" value="canel" onclick="cancel()">
+        </div>
+    </div>
+    <header style="margin-top: 30px;"><h1 class="ss">TO DO LIST</h1></header>
+    <!--  -->
+    <button onclick="showModal()" class="rr" style="width: fit-content;height: fit-content;position: absolute;top: 10px; font-size: 100px; padding: 30px;border-radius: 100px;color:#FF8225;" >
+        +
+    </button>
+    <!--  -->
+    <section id="body">
+        <div class="taskFrame">
+            <div class="task">
+                <div class="title">
+                    <h2 style="text-align: center;">
+                        Lorem ipsum dolor, sit amet consectetur adipisicin
+                    </h2>
+                </div>
+                <div class="inf">
+                    <button >
+                        <span class="material-symbols-outlined" style="font-size: 40px;">
+                        delete
+                        </span>
+                    </button>
+                    <button>
+                        <span class="material-symbols-outlined" style="font-size: 40px;">
+                            add
+                        </span>
+                    </button>
+                    <button >
+                        <span class="material-symbols-outlined" style="font-size: 40px;">
+                            check_circle
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="taskList">
+                <ul>
+                    <li>Coffee</li>
+                    <li>Tea</li>
+                    <li>Milk</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    let tasks = [
+        {
+            title:"salah",
+            check:true,
+            list:["fager","duhr","asr","mghreb","eshaa"],
+            id:1
+        },
+        {
+            title:"kiss your mother",
+            check:false,
+            list:["stage 111","tage 222","stage 333"],
+            id:2
+        },
+        {
+            title:"study mathe",
+            check:false,
+            list:["stage 1222222222222","tage 2222","stage 3333","rrrrrrrr","kkkkkkkkk","uu"],
+            id:3
+        },
+        {
+            title:"do some hoppys",
+            check:false,
+            list:["foot ball ","call of duty","rrrrrrrr","kkkkkkkkk","uu"],
+            id:4
+        }
+    ]
+
+    function showList() {
+        for (task of tasks){
+            for(stage of task.list){
+                    // console.log(stage)
+                    document.getElementById("list"+task.id).innerHTML+=`<li>${stage}</li>`
+                }
+        }
+    }
+    function refresh() {
+        document.getElementById("body").style.translate="0px 100px"
+        setTimeout(()=>{
+            document.getElementById("body").style.translate="0px 0px"
+        },100)
+        document.getElementById("body").innerHTML=""
+        for (task of tasks){
+            let checkStyel ="notDone"
+            if (task.check){
+                checkStyel="done"
+                // console.log(task.check)
+            }
+            document.getElementById("body").innerHTML+=`
+                <div class="taskFrame">
+                    <div class="task">
+                        <div class="title">
+                            <h2 style="text-align: center;">
+                                ${task.title}
+                            </h2>
+                        </div>
+                        <div class="inf">
+                            <button onclick="deletee(${task.id})" >
+                                <span  class="material-symbols-outlined" style="font-size: 40px;">
+                                delete
+                                </span>
+                            </button>
+                            <button >
+                                <span class="material-symbols-outlined" style="font-size: 40px;">
+                                    add
+                                </span>
+                            </button>
+                            <button class="${checkStyel}"   onclick="check(${task.id})">
+                                <span class="material-symbols-outlined" style="font-size: 40px;">
+                                    check_circle
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="taskList">
+                        <ul id="list${task.id}">
+                        </ul>
+                    </div>
+                </div>
+            `
+        }
+        showList()
+    }
+    refresh()
+    function deletee(id){
+        for(task of tasks){
+            // console.log(tasks.indexOf(task))
+            if(task.id==id){
+                console.log (task)
+                console.log(tasks.indexOf(task))
+                tasks.splice(tasks.indexOf(task),1)
+            }
+        }
+        // for(task of tasks){
+        //     if(task.id==id){
+        //         let index = tasks.indexOf[task.id]
+        //         tasks.splice(index+1,1)
+        //     }
+        // }
+        refresh()
+    }
+   function check(id){
+        for (task of tasks){
+            if (task.id==id){
+                task.check=!task.check
+            }
+        }
+        refresh()
+   }
+    let idOf =6
+   function add(){
+        let taskName =document.getElementById("taskTitleVal").value
+        if (taskName==""){
+            alert("you have to select the name first")
+        }else{
+            tasks.push({title:taskName,check:false,list:["1","4"],id:idOf})
+            console.log(tasks)
+            idOf++
+            refresh()
+            let style= document.getElementById("modalbody").style
+            style.transition="1s"
+            style.height="0px"
+            setTimeout(()=>{
+                document.getElementById("modal").style.visibility="hidden"
+            },1000)
+        }
+   }
+   function cancel() {
+    let style= document.getElementById("modalbody").style
+            style.transition=".5s"
+            style.height="0px"
+            setTimeout(()=>{
+                document.getElementById("modal").style.visibility="hidden"
+            },1000)
+   }
+   
+   document.getElementById("modal").style.visibility="hidden"
+   document.getElementById("modalbody").style.height="0"
+  function showModal () {
+        document.getElementById("modal").style.visibility="visible"
+        document.getElementById("modalbody").style.height="400px"
+    
+   }
+</script>
+</html>
